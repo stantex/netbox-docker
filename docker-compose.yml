@@ -18,6 +18,8 @@ services:
     - netbox-media-files:/opt/netbox/netbox/media:rw
     - netbox-reports-files:/opt/netbox/netbox/reports:rw
     - netbox-scripts-files:/opt/netbox/netbox/scripts:rw
+    ports:
+    - 8080:8080
   netbox-worker:
     <<: *netbox
     depends_on:
@@ -75,13 +77,43 @@ services:
 volumes:
   netbox-media-files:
     driver: local
+    driver_opts:
+      type: nfs4
+      o: addr=${STORAGE_IP},nolock,soft,rw
+      device: ":/volume1/docker-data/netbox/media"
   netbox-postgres-data:
     driver: local
+    driver_opts:
+      type: nfs4
+      o: addr=${STORAGE_IP},nolock,soft,rw
+      device: ":/volume1/docker-data/netbox/postgres"
   netbox-redis-cache-data:
     driver: local
+    driver_opts:
+      type: nfs4
+      o: addr=${STORAGE_IP},nolock,soft,rw
+      device: ":/volume1/docker-data/netbox/redis/cache"
   netbox-redis-data:
     driver: local
+    driver_opts:
+      type: nfs4
+      o: addr=${STORAGE_IP},nolock,soft,rw
+      device: ":/volume1/docker-data/netbox/redis/data"
   netbox-reports-files:
     driver: local
+    driver_opts:
+      type: nfs4
+      o: addr=${STORAGE_IP},nolock,soft,rw
+      device: ":/volume1/docker-data/netbox/reports"
   netbox-scripts-files:
     driver: local
+    driver_opts:
+      type: nfs4
+      o: addr=${STORAGE_IP},nolock,soft,rw
+      device: ":/volume1/docker-data/netbox/scripts"
+  netbox-config:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: addr=${STORAGE_IP},nolock,soft,rw
+      device: ":/volume1/docker-data/netbox/config"
